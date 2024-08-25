@@ -8,6 +8,10 @@
 
 Membership Inference Risk measures the susceptibility of a machine learning model to membership inference attacks. In such attacks, an adversary attempts to determine whether a specific data point was part of the model's training dataset based on the model's predictions.
 
+## Measurement indicators
+
+`Continuous and categorical variables`: This measure considers whether the model leaks information from the training data and can be used for both continuous and categorical variables.
+
 ## Calculation Steps
 
 1. **Data Sampling:** A random subset of 1000 samples is selected from the dataset to ensure a manageable size for model training and testing.

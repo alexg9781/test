@@ -1,6 +1,8 @@
 import pandas as pd
 import torch
 from DataComparator import DataComparator
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 real_data_path = "../数据/ZZZ_Sepsis_Data_From_R.csv"
 synthetic_data_path = "../数据/YB003_DS"
@@ -40,6 +42,31 @@ df_combined = pd.concat([df_fakehypotension, df_fakesepsis, df_sepsis_data], ign
 df_combined.fillna(df_combined.mean(numeric_only=True), inplace=True)
 # 选择一个较小的数据子集来避免内存问题
 df_subset = df_combined.sample(n=100, random_state=42)
+
+# 清理数据：确保列名一致
+common_columns = df_fakehypotension.columns.intersection(df_fakesepsis.columns).intersection(df_sepsis_data.columns)
+df_fakehypotension = df_fakehypotension[common_columns]
+df_fakesepsis = df_fakesepsis[common_columns]
+df_sepsis_data = df_sepsis_data[common_columns]
+
+# 合并清理后的数据
+df_combined = pd.concat([df_fakehypotension, df_fakesepsis, df_sepsis_data], ignore_index=True)
+df_combined.fillna(df_combined.mean(numeric_only=True), inplace=True)
+
+# 定义绘制单变量分布图的函数
+def plot_univariate_distribution(df, column, title='Univariate Distribution'):
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df[column], kde=True)
+    plt.title(title)
+    plt.xlabel(column)
+    plt.ylabel('Frequency')
+    plt.show()
+
+column_to_plot = 'PatientID'
+if column_to_plot in df_combined.columns:
+    plot_univariate_distribution(df_combined, column_to_plot, title=f'{column_to_plot} Distribution in Combined Data')
+else:
+    print(f"Column {column_to_plot} not found in df_combined")
 
 # attribute = 'Age'  # Example attribute
 # if attribute in df_combined.columns:

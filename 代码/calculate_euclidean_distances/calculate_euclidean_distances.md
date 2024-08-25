@@ -8,6 +8,12 @@
 
 The Euclidean Distance Matrix is a metric used to calculate the pairwise distances between data points in a dataset based on their numerical features. The Euclidean distance is the straight-line distance between two points in a multi-dimensional space, and it is commonly used to measure similarity or dissimilarity between data points in various applications such as clustering, dimensionality reduction, and nearest neighbor searches.
 
+## Measurement indicators
+
+`Continuous variables`: Euclidean distance is commonly used to measure the distance between continuous variables.
+
+`Categorical variables`: Categorical variables generally require numerical encoding in order to be applied to Euclidean distance calculations.
+
 ## Calculation Steps
 
 1. **Feature Selection:** The algorithm first selects all numerical features from the dataset, ensuring that only numerical data types are considered for distance computation.

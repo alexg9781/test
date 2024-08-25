@@ -8,6 +8,12 @@
 
 The T-Test is a statistical method used to determine if there is a significant difference between the means of two groups. This metric is commonly used in hypothesis testing to compare the means of two independent samples to see if they are significantly different from each other.
 
+## Measurement indicators
+
+`Continuous variables`: T-test is used to compare whether there is a significant difference in the mean of continuous variables between two groups.
+
+`Categorical variables`: applicable for grouping in binary variables (such as treatment group and control group). The categorical variables themselves are not the main test objects.
+
 ## Calculation Steps
 
 1. **Data Selection:** The data is first filtered to include only numerical columns (`int64`, `float64`). For each column, the data is split into two groups based on the specified `group_col`.

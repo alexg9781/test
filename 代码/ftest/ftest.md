@@ -8,6 +8,12 @@
 
 The F-Test (Analysis of Variance, ANOVA) is a statistical method used to compare the means of multiple groups to determine if there are any statistically significant differences between them. It helps in identifying whether the variation in the data is due to the group classification or due to random chance.
 
+## Measurement indicators
+
+`Continuous variables`: F-test is commonly used to analyze variance or compare the means of multiple groups (ANOVA), involving continuous variables.
+
+`Categorical variables`: Categorical variables can be used for grouping and as factors in analysis of variance.
+
 ## Calculation Steps
 
 1. **Grouping Data:** The method takes a dataset and a grouping column as input. It groups the data based on the unique values of the grouping column.

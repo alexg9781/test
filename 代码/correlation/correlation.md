@@ -8,6 +8,20 @@
 
 Correlation Analysis is a method used to measure the strength and direction of the relationship between pairs of numerical features in a dataset. The primary metrics used in this analysis are Pearson's correlation coefficient and Spearman's rank correlation coefficient.
 
+## Measurement indicators
+
+### Pearson correlation coefficient
+
+`Continuous variable`: Pearson correlation coefficient is used to measure the linear relationship between two continuous variables.
+
+`Categorical variable`: Pearson correlation coefficient is not applicable to categorical variables. If categorical variables need to be processed, they can be converted into binary variables (such as 0 and 1) for calculation, but this is not a standard usage method.
+
+### Spearman correlation coefficient
+
+`Continuous variables`: Spearman correlation coefficient can be used for continuous variables, but it does not require the relationship between variables to be linear, but rather based on rank correlation.
+
+`Categorical variables`: applicable to ordinal variables (categorical variables that can be arranged in order). For nominal categorical variables, it is usually necessary to convert them into binary variables to calculate correlation.
+
 ## Calculation Steps
 
 1. **Feature Pairing:** All pairs of numerical features (columns with data types `int64` or `float64`) in the dataset are identified for correlation analysis.

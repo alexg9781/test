@@ -8,6 +8,10 @@
 
 Attribute Inference Risk is a metric used to evaluate the difficulty of inferring a specific attribute from other features within a dataset. It quantifies the potential risk associated with the predictability of a sensitive attribute when it is excluded from the dataset, thereby assessing how much information the other features provide about this attribute.
 
+## Measurement indicators
+
+`Continuous and categorical variables`: This measure considers whether undisclosed attributes (which can be continuous or categorical variables) can be inferred through the model.
+
 ### Calculation Steps ###
 
 1. **Sample Selection:** A random subset of 100 samples is selected from the original dataset to ensure a manageable and representative sample size.
