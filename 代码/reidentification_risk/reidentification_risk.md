@@ -6,7 +6,22 @@
 
 ## Metric Description
 
-Reidentification Risk measures the likelihood that an individual in a dataset can be uniquely identified based on a specific unique identifier. This metric is crucial in assessing the privacy risk associated with publishing or sharing a dataset, particularly in cases where sensitive information is involved.
+**Overview**: Is it possible for the re identification risk assessment model to re identify the identity of a specific individual through its output information. In many privacy protection tasks, this risk is a key consideration, especially when dealing with sensitive data.
+
+**Implementation details**: In our re identification risk assessment, we used a logistic regression model. Logistic regression is a linear classifier suitable for binary classification problems, where it is used to predict whether an individual belongs to a specific dataset or population. Specifically, logistic regression estimates whether an individual can be re identified by learning the relationship between input features and target variables.
+
+### Explanation
+
+**Feature selection**: Logistic regression models use features from the dataset (which can be continuous or categorical variables) for training and prediction. These features may include individual attribute information or intermediate results output by the model.
+
+**Model output**: The output of a logistic regression model is a probability value that represents the likelihood of an individual belonging to a specific category. By setting a threshold, the model can make a judgment on whether an individual has been re identified.
+
+**Assessment**: The assessment of re identified risks depends on the accuracy of the logistic regression model. If the model can accurately predict individual identity, it indicates a high risk of re identification.
+Importance: By using logistic regression for re identification risk assessment, we can quantify the privacy breach risk when processing data. This helps to develop effective privacy protection strategies to ensure that individual privacy is not violated when sharing and publishing data.
+
+## Measurement indicators
+
+`Continuous and categorical variables`: Can risk assessment re identify individual identities by combining information from the dataset, applicable to both continuous and categorical variables.
 
 ## Calculation Steps
 

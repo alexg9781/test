@@ -8,6 +8,12 @@
 
 The Kolmogorov-Smirnov (KS) Test is a non-parametric test that compares the cumulative distributions of two data samples. It evaluates whether the two samples are drawn from the same distribution, providing a measure of the maximum difference between their empirical cumulative distribution functions (ECDFs).
 
+## Measurement indicators
+
+`Continuous variables`: Kolmogorov Smirnov test is commonly used to compare the differences between two continuous distributions, especially to compare the differences between sample distributions and theoretical distributions.
+
+`Categorical variables`: This test is not applicable to categorical variables.
+
 ## Calculation Steps
 
 1. **Identifying Common Features:** The method takes two datasets (real and synthetic) as input and identifies common columns between them.

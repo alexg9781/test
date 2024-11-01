@@ -1,3 +1,4 @@
+import pandas as pd
 # 再识别风险
 def reidentification_risk(df, unique_identifier):
     df_subset = df.sample(n=100, random_state=42)
