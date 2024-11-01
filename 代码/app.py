@@ -49,6 +49,9 @@ df_subset = df_combined.sample(n=100, random_state=42)
 common_columns = df_fakehypotension.columns.intersection(
     df_fakesepsis.columns
 ).intersection(df_sepsis_data.columns)
+common_columns = df_fakehypotension.columns.intersection(
+    df_fakesepsis.columns
+).intersection(df_sepsis_data.columns)
 df_fakehypotension = df_fakehypotension[common_columns]
 df_fakesepsis = df_fakesepsis[common_columns]
 df_sepsis_data = df_sepsis_data[common_columns]
