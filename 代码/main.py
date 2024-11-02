@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from datetime import datetime
 from scipy.stats import ttest_ind
 from scipy.stats import f_oneway
 from scipy.stats import ks_2samp
@@ -234,6 +235,7 @@ def calculate_euclidean_distances(data_file):
 def attribute_inference_risk_test(
     real_file, synthetic_file, sensitive_col="Admn001_ID"
 ):
+    print("start_time", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     real_data = pd.read_csv(real_file)
     synthetic_data = pd.read_csv(synthetic_file)
 
@@ -276,23 +278,23 @@ def attribute_inference_risk_test(
     y_pred = model.predict(X_test)
 
     # 计算准确率和混淆矩阵
-    accuracy = accuracy_score(y_test, y_pred)
-    # cm = confusion_matrix(y_test, y_pred)
-    print(f"Model Accuracy: {accuracy:.2f}")
-    # print("Confusion Matrix:", cm)
+    # accuracy = accuracy_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
+    # print(f"Model Accuracy: {accuracy:.2f}")
+    print("Confusion Matrix:", cm)
 
-    # # 对合成数据进行预测
-    synthetic_data_column = synthetic_data[feature_cols]
+    # # # 对合成数据进行预测
+    # synthetic_data_column = synthetic_data[feature_cols]
 
-    # # 预测合成数据的目标属性
-    synthetic_predictions = model.predict(synthetic_data_column)
+    # # # 预测合成数据的目标属性
+    # synthetic_predictions = model.predict(synthetic_data_column)
 
-    # # 计算属性推断成功率（这里以预测正确的比例作为成功率）
-    inference_success_rate = np.mean(
-        synthetic_predictions == synthetic_data[sensitive_col]
-    )
+    # # # 计算属性推断成功率（这里以预测正确的比例作为成功率）
+    # inference_success_rate = np.mean(
+    #     synthetic_predictions == synthetic_data[sensitive_col]
+    # )
 
-    print(f"Inference Success Rate: {inference_success_rate:.2f}")
+    # print(f"Inference Success Rate: {inference_success_rate:.2f}")
 
 
 if __name__ == "__main__":
@@ -302,10 +304,9 @@ if __name__ == "__main__":
     # t_test(real_file, synthetic_file)
     # f_test(real_file, synthetic_file)
     # ks_test(real_file, synthetic_file)
-    # calculate_euclidean_distances(real_file)  # calc 无需处理 todoing
     # correlation_test(real_file, synthetic_file)
     # membership_inference_attack_test(real_file, synthetic_file)
     # reidentification_risk_test(synthetic_file)
 
-    # todo
     attribute_inference_risk_test(real_file, synthetic_file)
+    # calculate_euclidean_distances(real_file)  # calc 无需处理 todoing
