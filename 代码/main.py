@@ -64,15 +64,12 @@ def t_test(real_file, synthetic_file):
 
 
 def f_test(real_file, synthetic_file):
-    # 读取 CSV 文件
     real_data = pd.read_csv(real_file)
     synthetic_data = pd.read_csv(synthetic_file)
 
-    # 获取数据列名
     real_data_headers_list = real_data.columns.tolist()
     synthetic_data_headers_list = synthetic_data.columns.tolist()
 
-    # 遍历真实数据和合成数据的每一列
     for real_col in real_data_headers_list:
         for synthetic_col in synthetic_data_headers_list:
             real_data_column = real_data[real_col].dropna()
@@ -86,25 +83,20 @@ def f_test(real_file, synthetic_file):
 
 
 def ks_test(real_file, synthetic_file):
-    # 读取 CSV 文件
     real_data = pd.read_csv(real_file)
     synthetic_data = pd.read_csv(synthetic_file)
 
-    # 获取数据列名
     real_data_headers_list = real_data.columns.tolist()
     synthetic_data_headers_list = synthetic_data.columns.tolist()
 
-    # 遍历真实数据和合成数据的每一列
     for real_col in real_data_headers_list:
         for synthetic_col in synthetic_data_headers_list:
-            # 去除缺失值
             real_data_column = real_data[real_col].dropna()
             synthetic_data_column = synthetic_data[synthetic_col].dropna()
 
             # 执行 KS 检验
             ks_statistic, p_value = ks_2samp(real_data_column, synthetic_data_column)
 
-            # 打印结果
             print(
                 f"[Function ks_test] Comparing {real_col} and {synthetic_col}",
                 f"KS statistic: {ks_statistic}, p-value: {p_value}",
@@ -154,7 +146,6 @@ def membership_inference_attack_test(real_file, synthetic_file, threshold=0.5):
 
     for real_col in real_data_headers_list:
         for synthetic_col in synthetic_data_headers_list:
-            # 去除缺失值
             real_data_column = real_data[real_col].dropna()
             synthetic_data_column = synthetic_data[synthetic_col].dropna()
 
@@ -166,7 +157,6 @@ def membership_inference_attack_test(real_file, synthetic_file, threshold=0.5):
             real_membership_inference = real_confidence > threshold
             synthetic_membership_inference = synthetic_confidence > threshold
 
-            # 打印结果
             print(
                 f"[Function membership_inference_attack_test] Comparing {real_col} and {synthetic_col}",
                 f"Real data membership inference: {real_membership_inference.sum()} members detected",
@@ -175,10 +165,8 @@ def membership_inference_attack_test(real_file, synthetic_file, threshold=0.5):
 
 
 def reidentification_risk_test(data_file):
-    # 读取 CSV 文件
     data = pd.read_csv(data_file)
 
-    # 获取数据列名
     headers_list = data.columns.tolist()
 
     # 计算 k-anonymity
@@ -190,8 +178,18 @@ def reidentification_risk_test(data_file):
 
     # 输出 k-anonymity 结果
     print("[Function reidentification_risk_test] K-anonymity values:")
+    results = []
     for col, k_value in k_anonymity.items():
         print(f"{col}: {k_value}")
+        results.append([len(results) + 1, col, k_value])
+    print()
+    print(
+        tabulate(
+            results,
+            headers=["Real col", "k_value"],
+            tablefmt="fancy_grid",
+        )
+    )
 
     # 计算 l-diversity
     l_diversity = {}
@@ -203,8 +201,19 @@ def reidentification_risk_test(data_file):
 
     # 输出 l-diversity 结果
     print("[Function reidentification_risk_test] L-diversity values:")
+    results = []
+
     for col, l_value in l_diversity.items():
-        print(f"{col}: {l_value}")
+        # print(f"{col}: {l_value}")
+        results.append([len(results) + 1, col, l_value])
+    print()
+    print(
+        tabulate(
+            results,
+            headers=["Real col", "l_value"],
+            tablefmt="fancy_grid",
+        )
+    )
 
 
 def calculate_euclidean_distances(data_file):
@@ -293,14 +302,14 @@ if __name__ == "__main__":
     real_file = "../数据/ZZZ_Sepsis_Data_From_R.csv"
     synthetic_file = "../数据/C001_FakeSepsis.csv"  # C001_FakeHypotension.csv
 
-    t_test(real_file, synthetic_file)
+    # t_test(real_file, synthetic_file)
     # f_test(real_file, synthetic_file)
     # ks_test(real_file, synthetic_file)
 
-    # calculate_euclidean_distances(real_file)  # calc
+    # calculate_euclidean_distances(real_file)  # calc 无需处理
     # correlation_test(real_file, synthetic_file)
     # membership_inference_attack_test(real_file, synthetic_file)
-    # reidentification_risk_test(synthetic_file)
+    reidentification_risk_test(synthetic_file)
 
     # todo
     # attribute_inference_risk_test(real_file, synthetic_file)
