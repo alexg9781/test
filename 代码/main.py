@@ -215,6 +215,7 @@ def reidentification_risk_test(data_file):
 
 
 def calculate_euclidean_distances(data_file):
+    print("start_time", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     data = pd.read_csv(data_file)
     num_samples = data.shape[0]
     distances = np.zeros((num_samples, num_samples))  # 初始化距离矩阵
@@ -229,6 +230,7 @@ def calculate_euclidean_distances(data_file):
         print(
             f"[Function calculate_euclidean_distances] data is {data_file} Euclidean distances: {distances}"
         )
+    print("end_time", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     return distances
 
 
@@ -278,10 +280,11 @@ def attribute_inference_risk_test(
     y_pred = model.predict(X_test)
 
     # 计算准确率和混淆矩阵
-    # accuracy = accuracy_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
-    # print(f"Model Accuracy: {accuracy:.2f}")
+    accuracy = accuracy_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)  # 约耗时23min
+    print(f"Model Accuracy: {accuracy:.2f}")
     print("Confusion Matrix:", cm)
+    print("end_time", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     # # # 对合成数据进行预测
     # synthetic_data_column = synthetic_data[feature_cols]
@@ -308,5 +311,5 @@ if __name__ == "__main__":
     # membership_inference_attack_test(real_file, synthetic_file)
     # reidentification_risk_test(synthetic_file)
 
-    attribute_inference_risk_test(real_file, synthetic_file)
-    # calculate_euclidean_distances(real_file)  # calc 无需处理 todoing
+    # attribute_inference_risk_test(real_file, synthetic_file)
+    calculate_euclidean_distances(real_file)  # calc 无需处
