@@ -7,7 +7,7 @@ from scipy.stats import pearsonr
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from tabulate import tabulate
 
 
@@ -149,7 +149,6 @@ def membership_inference_attack_test(real_file, synthetic_file, threshold=0.5):
             real_data_column = real_data[real_col].dropna()
             synthetic_data_column = synthetic_data[synthetic_col].dropna()
 
-            # 计算置信度（这里简单模拟为随机数，实际应用中应使用模型输出）
             real_confidence = np.random.rand(len(real_data_column))
             synthetic_confidence = np.random.rand(len(synthetic_data_column))
 
@@ -180,9 +179,8 @@ def reidentification_risk_test(data_file):
     print("[Function reidentification_risk_test] K-anonymity values:")
     results = []
     for col, k_value in k_anonymity.items():
-        print(f"{col}: {k_value}")
+        # print(f"{col}: {k_value}")
         results.append([len(results) + 1, col, k_value])
-    print()
     print(
         tabulate(
             results,
@@ -206,7 +204,6 @@ def reidentification_risk_test(data_file):
     for col, l_value in l_diversity.items():
         # print(f"{col}: {l_value}")
         results.append([len(results) + 1, col, l_value])
-    print()
     print(
         tabulate(
             results,
@@ -234,68 +231,68 @@ def calculate_euclidean_distances(data_file):
     return distances
 
 
-def attribute_inference_risk_test(real_file, synthetic_file):
-    # 读取 CSV 文件
+def attribute_inference_risk_test(
+    real_file, synthetic_file, sensitive_col="Admn001_ID"
+):
     real_data = pd.read_csv(real_file)
     synthetic_data = pd.read_csv(synthetic_file)
 
     # 获取数据列名
-    real_data_headers_list = real_data.columns.tolist()
-    synthetic_data_headers_list = synthetic_data.columns.tolist()
+    # real_data_headers_list = real_data.columns.tolist()
+    # synthetic_data_headers_list = synthetic_data.columns.tolist()
 
     # 遍历真实数据和合成数据的每一列
-    i = 1
-    for real_col in real_data_headers_list:
-        for synthetic_col in synthetic_data_headers_list:
-            # 去除缺失值
-            real_data_column = real_data[real_col].dropna()
-            synthetic_data_column = synthetic_data[synthetic_col].dropna()
+    # for real_col in real_data_headers_list:
+    #     for synthetic_col in synthetic_data_headers_list:
+    #         real_data_column = real_data[real_col].dropna()
+    #         synthetic_data_column = synthetic_data[synthetic_col].dropna()
 
-            # 计算属性推断成功率（这里简单模拟为随机数，实际应用中应使用模型输出）
-            inference_success_rate = np.random.rand()  # 模拟推断成功率
+    #         # 计算属性推断成功率（这里简单模拟为随机数，实际应用中应使用模型输出） mock todo
+    #         inference_success_rate = np.random.rand()  # 模拟推断成功率
+    #         # 打印结果
+    #         print(
+    #             f"[Function attribute_inference_risk_test] {i} Comparing {real_col} and {synthetic_col}",
+    #             f"Inference success rate: {inference_success_rate:.2f}",
+    #         )
+    ##########################################################################
 
-            # 打印结果
-            print(
-                f"[Function attribute_inference_risk_test] {i} Comparing {real_col} and {synthetic_col}",
-                f"Inference success rate: {inference_success_rate:.2f}",
-            )
-            i += 1
-            # 获取特征列（去掉目标列）
-            # feature_cols = [col for col in real_data.columns if col != target_col]
+    # 获取特征列（去掉目标列）
+    feature_cols = [col for col in real_data.columns if col != sensitive_col]
 
-            # # 分离特征和目标变量
-            # X = real_data[feature_cols]
-            # y = real_data[target_col]
+    # # 分离特征和目标变量
+    X = real_data[feature_cols]
+    y = real_data[sensitive_col]
 
-            # # 拆分数据集为训练集和测试集
-            # X_train, X_test, y_train, y_test = train_test_split(
-            #     X, y, test_size=0.2, random_state=42
-            # )
+    # # 拆分数据集为训练集和测试集
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
-            # # 创建并训练逻辑回归模型
-            # model = LogisticRegression(max_iter=1000)
-            # model.fit(X_train, y_train)
+    # # 创建并训练逻辑回归模型
+    model = LogisticRegression(max_iter=1000)
+    model.fit(X_train, y_train)
 
-            # # 用测试集进行预测
-            # y_pred = model.predict(X_test)
+    # # 用测试集进行预测
+    y_pred = model.predict(X_test)
 
-            # # 计算准确率
-            # accuracy = accuracy_score(y_test, y_pred)
-            # print(f"Model Accuracy: {accuracy:.2f}")
+    # 计算准确率和混淆矩阵
+    accuracy = accuracy_score(y_test, y_pred)
+    # cm = confusion_matrix(y_test, y_pred)
+    print(f"Model Accuracy: {accuracy:.2f}")
+    # print("Confusion Matrix:", cm)
 
-            # # 对合成数据进行预测
-            # synthetic_data_column = synthetic_data[feature_cols]
+    # # 对合成数据进行预测
+    synthetic_data_column = synthetic_data[feature_cols]
 
-            # # 预测合成数据的目标属性
-            # synthetic_predictions = model.predict(synthetic_data_column)
+    # # 预测合成数据的目标属性
+    synthetic_predictions = model.predict(synthetic_data_column)
 
-            # # 计算属性推断成功率（这里以预测正确的比例作为成功率）
-            # inference_success_rate = np.mean(
-            #     synthetic_predictions == synthetic_data[target_col]
-            # )
+    # # 计算属性推断成功率（这里以预测正确的比例作为成功率）
+    inference_success_rate = np.mean(
+        synthetic_predictions == synthetic_data[sensitive_col]
+    )
 
-            # print(f"Inference Success Rate: {inference_success_rate:.2f}")
-            # i += 1
+    print(f"Inference Success Rate: {inference_success_rate:.2f}")
 
 
 if __name__ == "__main__":
@@ -305,11 +302,10 @@ if __name__ == "__main__":
     # t_test(real_file, synthetic_file)
     # f_test(real_file, synthetic_file)
     # ks_test(real_file, synthetic_file)
-
-    # calculate_euclidean_distances(real_file)  # calc 无需处理
+    # calculate_euclidean_distances(real_file)  # calc 无需处理 todoing
     # correlation_test(real_file, synthetic_file)
     # membership_inference_attack_test(real_file, synthetic_file)
-    reidentification_risk_test(synthetic_file)
+    # reidentification_risk_test(synthetic_file)
 
     # todo
-    # attribute_inference_risk_test(real_file, synthetic_file)
+    attribute_inference_risk_test(real_file, synthetic_file)
